@@ -1,4 +1,6 @@
 const king = require("./index");
+const solution = require("./system/solution");
+const { getRandomInt } = require("./system/environment");
 
 test('Функция должна вернуть булиновое значение', () => {
 	const type = typeof king(5, 4, 4, 5);
@@ -46,4 +48,26 @@ test('Тест. x1: 1, y1: 1, x2: 1, y2: 2', () => {
 	const res = king(1, 1, 1, 2);
 
 	expect(res).toBe(true);
+});
+
+test('Auto: random outcomes', () => {
+	let failed = false;
+
+	for (let i = 0; i < 100; i++) {
+		const randX1 = getRandomInt(1, 8);
+		const randY1 = getRandomInt(1, 8);
+		const randX2 = getRandomInt(1, 8);
+		const randY2 = getRandomInt(1, 8);
+
+		if (randX1 === randX2 && randY1 === randY2) {
+			continue;
+		}
+
+		if (solution(randX1, randY1, randX2, randY2) !== king(randX1, randY1, randX2, randY2)) {
+			failed = 'failed';
+			break;
+		}
+	}
+
+	expect(failed).not.toBe('failed');
 });
